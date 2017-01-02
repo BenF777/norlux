@@ -2,6 +2,9 @@
 
 Pipeline for NorLux Project
 
+Command Line Usage Example:
+'''. runNorlux.sh configuration.conf 161216-ARHBV_NorLux_3 161216-ARHBV_NorLux_3 1 1 '''
+
 Tools used:
 - FastQ Generation: bcl2fastq
 - FastQ Trimming: FastX
