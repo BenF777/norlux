@@ -15,7 +15,7 @@ echo $OUT
 #echo $FILENAME #$OUT
 REFERENCE=/home/benflies/NGS/references/hg19/ucsc.hg19.fa
 
-samtools mpileup -u -f /home/benflies/NGS/references/hg19/ucsc.hg19.fa $FILENAME | bcftools call -cv -V indels > ${OUT}.bcf
+samtools mpileup -u -f $REFERENCE $FILENAME | bcftools call -cv -V indels > ${OUT}.bcf
 bcftools view ${OUT}.bcf > ${OUT}.vcf
 bgzip -c $OUT.vcf > $OUT.vcf.gz
 tabix -p vcf $OUT.vcf.gz
