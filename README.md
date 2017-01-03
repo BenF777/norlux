@@ -5,7 +5,7 @@ Pipeline for NorLux Project
 Command Line Usage Example:
 ```. runNorlux.sh configuration.conf 161216-ARHBV_NorLux_3 161216-ARHBV_NorLux_3 1 1 ```
 
-The final filtered and annotated variant calls are saved to ```*.hg19_multianno.xlxs``` files
+The final filtered and annotated variant calls are saved to ```*.hg19_multianno.xlsx``` files
 
 Tools used:
 - FastQ Generation: bcl2fastq
