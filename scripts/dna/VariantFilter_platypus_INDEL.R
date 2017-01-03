@@ -14,16 +14,15 @@ pre <- FilterRules(list(isLowCoverageExomeSnp = function(x) {
 }
 ))
 
+fileExtention <- paste(paste(paste(paste(paste(paste("_filtered_DP",minDP,sep=""), sep=""), minAF, sep=""), "", sep=""),"", sep=""), ".vcf", sep="")
+destination <- paste( substr(file, 1, nchar(file)-7), fileExtention,sep="")
+filt <- FilterRules(list(
+   isDP = function(x) {
+      info(x)$TC >= minDP
+   },
+   isGQ = function(x) {
+      (!is.na(geno(x)$GQ) & geno(x)$GQ >= 99)
+   }
+ ))
 
- fileExtention <- paste(paste(paste(paste(paste(paste("_filtered_DP",minDP,sep=""), sep=""), minAF, sep=""), "", sep=""),"", sep=""), ".vcf", sep="")
- destination <- paste( substr(file, 1, nchar(file)-7), fileExtention,sep="")
- filt <- FilterRules(list(
-     isDP = function(x) {
-        info(x)$TC >= minDP      
-     },
-    isGQ = function(x) {
-    (!is.na(geno(x)$GQ) & geno(x)$GQ >= 99)
-    }
-   ))
-
- filtered <- filterVcf(file, "Grch37d5", destination, filters=filt,  prefilters=pre)
+filtered <- filterVcf(file, "Grch37d5", destination, filters=filt,  prefilters=pre)
