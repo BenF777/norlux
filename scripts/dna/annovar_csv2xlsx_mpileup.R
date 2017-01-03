@@ -45,6 +45,7 @@ for (i in dp4) {
   af_list<-c(af_list,af)
 }
 
+out$VAF <- af_list
 out$DP <- dp
 out$DP4 <- dp4
 out$MQ <- mq
@@ -54,7 +55,6 @@ out$AC1 <- ac1
 out$Other <- rest
 out$format <-format
 out$sample <- sample
-out$VAF <- af_list
 out <- out[,!(names(out) %in% c("Otherinfo"))]
 out[is.na(out)] <- "NA"
 
