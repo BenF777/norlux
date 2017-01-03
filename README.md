@@ -12,7 +12,7 @@ Tools used:
 - FastQ Trimming: FastX
 - FastQ Quality Control: FastQC
 - Alignment: BWA mem
-- Variant Calling: Samtools & Platypus
+- Variant Calling: Samtools (SNVs) & Platypus (Indels)
 - Variant Filtering: VariantAnnotation
 - Variant Annotation: Annotator
 
