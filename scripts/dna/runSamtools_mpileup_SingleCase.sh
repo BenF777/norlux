@@ -41,8 +41,8 @@ Rscript $SCRIPT_PATH/dna/VariantFilter_mpileup_SNP.R 40 0.1 0.1 ${OUT}.vcf.gz
 echo "VARIANT ANNOTATION"
 bash $SCRIPT_PATH/dna/anovar_annotate.sh $CONFIG_FILE  $(ls -d -1 ${OUT}_filtered_DP40_AF0.1.vcf)
 #bash $SCRIPT_PATH/dna/anovar_annotate.sh $CONFIG_FILE  $(ls -d -1 ${OUT}_comp_INDEL.recode_filtered*.vcf)
-#
-#Rscript $SCRIPT_PATH/dna/annovar_csv2xlsx_mpileup.R  $(ls -d -1 ${OUT}_comp_SNP.recode_filtered*.hg19_multianno.csv)
+
+Rscript $SCRIPT_PATH/dna/annovar_csv2xlsx_mpileup.R  $(ls -d -1 ${OUT}_filtered_DP40_AF0.1.hg19_multianno.csv)
 #Rscript $SCRIPT_PATH/dna/annovar_csv2xlsx_mpileup.R  $(ls -d -1 ${OUT}_comp_INDEL.recode_filtered*.hg19_multianno.csv)
-#
+
 echo "$OUT finished"
