@@ -35,7 +35,7 @@ echo
 mkdir -p $LOCAL_NGS_PATH/$RUN_ID
 
 #COPY to local workstation
-#time cp -rf $SERVER_NGS_PATH/$RUN_NAME $LOCAL_NGS_PATH
+time cp -rf $SERVER_NGS_PATH/$RUN_NAME $LOCAL_NGS_PATH
 
 #Create output directories in the local run copy
 mkdir -p $FASTQ_DEMUX
@@ -45,27 +45,27 @@ mkdir -p $BAM_PATH
 
 #Generate FASTQ files
 echo "Convert Bcl To Fastq"
-#bash $SCRIPT_PATH/bcl/convertBclToFastq.sh $RUN_PATH
-#wait
+bash $SCRIPT_PATH/bcl/convertBclToFastq.sh $RUN_PATH
+wait
 
-#mv $FASTQ_PATH/* $FASTQ_DEMUX/
+mv $FASTQ_PATH/* $FASTQ_DEMUX/
 
 #Trim low-quality bases from FASTQ reads
 echo "TRIMMER"
-#find $FASTQ_DEMUX -name "*R1*.fastq.gz" | grep -v I1 | grep -v Undetermined | grep -v trimmed | sort | parallel -P$DNA_PARALLEL_ALIGNMENT -n1 bash $SCRIPT_PATH/qc/fastxTrimmer_bothSites.sh $CONFIG_FILE $TRIMMER_LEFT $TRIMMER_RIGHT $FASTQ_DEMUX
-#find $FASTQ_DEMUX -name "*R2*.fastq.gz" | grep -v I1 | grep -v Undetermined | grep -v trimmed | sort | parallel -P$DNA_PARALLEL_ALIGNMENT -n1 bash $SCRIPT_PATH/qc/fastxTrimmer_bothSites.sh $CONFIG_FILE $TRIMMER_LEFT $TRIMMER_RIGHT $FASTQ_DEMUX
-#wait
+find $FASTQ_DEMUX -name "*R1*.fastq.gz" | grep -v I1 | grep -v Undetermined | grep -v trimmed | sort | parallel -P$DNA_PARALLEL_ALIGNMENT -n1 bash $SCRIPT_PATH/qc/fastxTrimmer_bothSites.sh $CONFIG_FILE $TRIMMER_LEFT $TRIMMER_RIGHT $FASTQ_DEMUX
+find $FASTQ_DEMUX -name "*R2*.fastq.gz" | grep -v I1 | grep -v Undetermined | grep -v trimmed | sort | parallel -P$DNA_PARALLEL_ALIGNMENT -n1 bash $SCRIPT_PATH/qc/fastxTrimmer_bothSites.sh $CONFIG_FILE $TRIMMER_LEFT $TRIMMER_RIGHT $FASTQ_DEMUX
+wait
 
 #Perform a Quality Control on FASTQ files
 echo "FASTQC"
-#time bash $SCRIPT_PATH/qc/generateFastqc.sh $CONFIG_FILE $RUN_PATH &
-#wait
+time bash $SCRIPT_PATH/qc/generateFastqc.sh $CONFIG_FILE $RUN_PATH &
+wait
 
 #Align reads to reference genome (hg19)
 echo "ALIGNMENT"
-#SCRIPT="bash $SCRIPT_PATH/dna/bwaAllignmentPairedRead.sh $CONFIG_FILE $BAM_PATH $LOG_PATH $RUN_ID"
-#find $FASTQ_DEMUX -name "*trimmed.fastq.gz" | grep -v I1 | grep -v Undetermined | sort | parallel -P $DNA_PARALLEL_ALIGNMENT -n2 $SCRIPT
-#wait
+SCRIPT="bash $SCRIPT_PATH/dna/bwaAllignmentPairedRead.sh $CONFIG_FILE $BAM_PATH $LOG_PATH $RUN_ID"
+find $FASTQ_DEMUX -name "*trimmed.fastq.gz" | grep -v I1 | grep -v Undetermined | sort | parallel -P $DNA_PARALLEL_ALIGNMENT -n2 $SCRIPT
+wait
 
 echo "CNV"
 mkdir -p $CNV_PATH
@@ -100,8 +100,8 @@ echo "COVERAGE"
 COVERAGE_PATH=$FILE_PATH/coverage
 mkdir -p $COVERAGE_PATH
 
-#find $BAM_PATH -name "*.dupsMarked.bam" | while read fname; do
-#      Rscript $SCRIPT_PATH/qc/CoverageTEQC.R $COVERAGE_PATH $ACT_BED_FILE $fname &
-#done
+find $BAM_PATH -name "*.dupsMarked.bam" | while read fname; do
+      Rscript $SCRIPT_PATH/qc/CoverageTEQC.R $COVERAGE_PATH $ACT_BED_FILE $fname &
+      done
 
 echo "Analysis ready!"

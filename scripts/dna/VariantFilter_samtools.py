@@ -136,7 +136,7 @@ def VCF_Info_filter(vcf, info_field, threshold):
                             forward = float(l.split(",")[2])
                             reverse = float(l.split(",")[3])
                             if forward > 0 and reverse > 0:
-                                SB = float(forward) / float(reverse)
+                                SB = float(forward) / (float(forward) + float(reverse))
                             elif forward == 0:
                                 SB = 0
                             elif reverse == 0:
