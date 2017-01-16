@@ -23,7 +23,7 @@ tabix -p vcf ${OUT}_snv.vcf.gz
 #Filter
 echo "FILTER $OUT"
 
-python $SCRIPT_PATH/dna/VariantFilter_samtools.py ${OUT}_snv.vcf $BED_FILE DP=40 DP4_freq=0.1 DP4_SB=0.1
+python $SCRIPT_PATH/dna/VariantFilter_samtools.py ${OUT}_snv.vcf $BED_FILE 40 0.1 0.1
 
 #Variant Annotation
 echo "VARIANT ANNOTATION"

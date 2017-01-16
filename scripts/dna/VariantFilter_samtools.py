@@ -10,6 +10,10 @@ from os.path import normpath
 VCF_FILE = sys.argv[1]
 BED_FILE = sys.argv[2]
 
+depth_threshold = sys.argv[3]
+vaf_threshold = sys.argv[4]
+sb_threshold = sys.argv[5]
+
 INPUT = re.sub(".vcf", '', VCF_FILE)
 
 OUTPUT_VCF = INPUT+"_filtered.vcf"
@@ -149,23 +153,21 @@ def VCF_Info_filter(vcf, info_field, threshold):
                     print '\t'.join(line)
             else:
                 continue
-                #print '\t'.join(line)
-
-counter = 0
 
 open(INPUT+"_filtered.vcf", "w").writelines([l for l in open(VCF_FILE).readlines()])
+
 sys.stdout = open(INPUT+"_filtered_DP.vcf", "w")
-VCF_Info_filter(VCF_FILE,"DP",40)
+VCF_Info_filter(VCF_FILE,"DP",float(depth_threshold))
 sys.stdout.close()
 os.remove(INPUT+"_filtered.vcf")
 
 sys.stdout = open(INPUT+"_filtered_DP_FREQ.vcf", "w")
-VCF_Info_filter(INPUT+"_filtered_DP.vcf","DP4_freq",0.1)
+VCF_Info_filter(INPUT+"_filtered_DP.vcf","DP4_freq",float(vaf_threshold))
 sys.stdout.close()
 os.remove(INPUT+"_filtered_DP.vcf")
 
 sys.stdout = open(INPUT+"_filtered_DP_FREQ_SB.vcf", "w")
-VCF_Info_filter(INPUT+"_filtered_DP_FREQ.vcf","DP4_SB",0.1)
+VCF_Info_filter(INPUT+"_filtered_DP_FREQ.vcf","DP4_SB",float(sb_threshold))
 sys.stdout.close()
 os.remove(INPUT+"_filtered_DP_FREQ.vcf")
 

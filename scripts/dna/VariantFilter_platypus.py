@@ -8,9 +8,7 @@ from itertools import chain
 from os.path import normpath
 
 VCF_FILE = sys.argv[1]
-#VCF_FILE = "/home/benflies/Desktop/NGS_DATA/160909-ARKJD_NorLux1/out/var_platypus/T407_platypus_indel.vcf"
 BED_FILE = sys.argv[2]
-#BED_FILE = "/home/benflies/github/norlux_testing_development/scripts/bed/NPHD_fixed.bed"
 
 depth_threshold = sys.argv[3]
 vaf_threshold = sys.argv[4]
@@ -19,8 +17,6 @@ sb_threshold = sys.argv[5]
 INPUT = re.sub(".vcf", '', VCF_FILE)
 
 OUTPUT_VCF = INPUT+"_filtered.vcf"
-
-info_field = "DP4_freq"
 
 def vcf_converter(vcf_filename):
     lines = []
