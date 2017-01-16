@@ -5,9 +5,9 @@ source $CONFIG_FILE
 echo $SERVER_NGS_PATH
 
 RUN_ID=$2
-RUN_NAME=$3
-TRIMMER_LEFT=$4
-TRIMMER_RIGHT=$5
+RUN_NAME=$RUN_ID
+TRIMMER_LEFT=1
+TRIMMER_RIGHT=1
 
 #local path for processing
 RUN_PATH=$LOCAL_NGS_PATH/$RUN_NAME
@@ -19,8 +19,8 @@ FASTQ_PATH=$FILE_PATH/fastq_tmp
 FASTQ_DEMUX=$FILE_PATH/fastq
 BAM_PATH=$FILE_PATH/bam
 LOG_PATH=$FILE_PATH/log
-VAR_PATH=$FILE_PATH/var
-PLATYPUS_VAR=$FILE_PATH/var_platypus
+VAR_PATH_SAMTOOLS=$FILE_PATH/var_samtools
+VAR_PATH_PLATYPUS=$FILE_PATH/var_platypus
 CNV_PATH=$FILE_PATH/cnv
 
 echo "RUN Agilent paired end with BWA mem"
@@ -35,7 +35,7 @@ echo
 mkdir -p $LOCAL_NGS_PATH/$RUN_ID
 
 #COPY to local workstation
-time cp -rf $SERVER_NGS_PATH/$RUN_NAME $LOCAL_NGS_PATH
+#time cp -rf $SERVER_NGS_PATH/$RUN_NAME $LOCAL_NGS_PATH
 
 #Create output directories in the local run copy
 mkdir -p $FASTQ_DEMUX
@@ -64,7 +64,6 @@ wait
 #Align reads to reference genome (hg19)
 echo "ALIGNMENT"
 SCRIPT="bash $SCRIPT_PATH/dna/bwaAllignmentPairedRead.sh $CONFIG_FILE $BAM_PATH $LOG_PATH $RUN_ID"
-
 find $FASTQ_DEMUX -name "*trimmed.fastq.gz" | grep -v I1 | grep -v Undetermined | sort | parallel -P $DNA_PARALLEL_ALIGNMENT -n2 $SCRIPT
 wait
 
@@ -79,19 +78,21 @@ ACT_BED_FILE=$SCRIPT_PATH/bed/NPHD_fixed.bed
 
 echo "Variant Calling using Samtools for SNVs and Platypus for Indels"
 
-mkdir -p $VAR_PATH
-mkdir -p $PLATYPUS_VAR
+mkdir -p $VAR_PATH_SAMTOOLS
+mkdir -p $VAR_PATH_PLATYPUS
 
-ACT_BED_FILE=$SCRIPT_PATH/bed/NPHD.bed
+ACT_BED_FILE=$SCRIPT_PATH/bed/NPHD_fixed.bed
 
 find $BAM_PATH -name "*_aligned.bam" | while read fname; do
       echo $fname
-      bash $SCRIPT_PATH/dna/runSamtools_mpileup_SingleCase.sh $CONFIG_FILE $VAR_PATH $ACT_BED_FILE $fname
+      #bash $SCRIPT_PATH/dna/runSamtools_INDEL.sh $CONFIG_FILE $VAR_PATH_SAMTOOLS $ACT_BED_FILE $fname &
+      bash $SCRIPT_PATH/dna/runSamtools_SNV.sh $CONFIG_FILE $VAR_PATH_SAMTOOLS $ACT_BED_FILE $fname
 done
 
 find $BAM_PATH -name "*_aligned.bam" | while read fname; do
       echo $fname
-      bash $SCRIPT_PATH/dna/runPlatypus.sh $CONFIG_FILE $PLATYPUS_VAR $ACT_BED_FILE $fname
+#      #bash $SCRIPT_PATH/dna/runPlatypus_SNV.sh $CONFIG_FILE $VAR_PATH_PLATYPUS $ACT_BED_FILE $fname
+      bash $SCRIPT_PATH/dna/runPlatypus_INDEL.sh $CONFIG_FILE $VAR_PATH_PLATYPUS $ACT_BED_FILE $fname
 done
 
 echo "COVERAGE"
