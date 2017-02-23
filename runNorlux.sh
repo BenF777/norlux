@@ -6,13 +6,9 @@ echo $SERVER_NGS_PATH
 
 RUN_ID=$2
 RUN_NAME=$RUN_ID
-TRIMMER_LEFT=1
-TRIMMER_RIGHT=1
 
-#local path for processing
-RUN_PATH=$LOCAL_NGS_PATH/$RUN_NAME
-echo $RUN_PATH
-echo
+TRIMMER_LEFT=2
+TRIMMER_RIGHT=2
 
 FILE_PATH=$RUN_PATH/out
 FASTQ_PATH=$FILE_PATH/fastq_tmp
@@ -22,6 +18,11 @@ LOG_PATH=$FILE_PATH/log
 VAR_PATH_SAMTOOLS=$FILE_PATH/var_samtools
 VAR_PATH_PLATYPUS=$FILE_PATH/var_platypus
 CNV_PATH=$FILE_PATH/cnv
+
+#local path for processing
+RUN_PATH=$LOCAL_NGS_PATH/$RUN_NAME
+echo $RUN_PATH
+echo
 
 echo "RUN Agilent paired end with BWA mem"
 
@@ -69,7 +70,7 @@ wait
 
 echo "CNV"
 mkdir -p $CNV_PATH
-ACT_BED_FILE=$SCRIPT_PATH/bed/NPHD_fixed.bed
+ACT_BED_FILE=$SCRIPT_PATH/bed/3037891_Covered.bed
 
 #find $BAM_PATH -name "*.dupsMarked.bam" | while read fname; do
 #      file_name=$(basename "$fname")
@@ -80,8 +81,6 @@ echo "Variant Calling using Samtools for SNVs and Platypus for Indels"
 
 mkdir -p $VAR_PATH_SAMTOOLS
 mkdir -p $VAR_PATH_PLATYPUS
-
-ACT_BED_FILE=$SCRIPT_PATH/bed/NPHD_fixed.bed
 
 find $BAM_PATH -name "*dupsMarked.bam" | while read fname; do
       echo $fname

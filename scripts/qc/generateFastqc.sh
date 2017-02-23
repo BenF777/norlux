@@ -23,6 +23,5 @@ mkdir -p $FASTQC_PATH
 echo "" >> $LOG_FILE
 echo "RUN-Details:" >> $LOG_FILE
 
-find $FASTQ_PATH -name "*.fastq.gz" | grep -v I1 | sort | grep -v NuGen | parallel -X $FASTQC_BINARY -t 2 --nogroup -o $FASTQC_PATH 
-
-
+find $FASTQ_PATH -name "*.fastq.gz" | grep -v I1 | sort | grep -v NuGen | parallel -X $FASTQC_BINARY -t 2 --nogroup -o $FASTQC_PATH
+find $FASTQ_PATH -name "*_trimmed.fastq.gz" | grep -v I1 | sort | grep -v NuGen | parallel -X $FASTQC_BINARY -t 2 --nogroup -o $FASTQC_PATH

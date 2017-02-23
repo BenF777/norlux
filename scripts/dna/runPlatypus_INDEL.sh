@@ -11,7 +11,7 @@ OUT=${OUT%_aligned.bam}
 OUT=${OUT}_platypus
 echo $OUT
 
-python $PLATYPUS_BINARY callVariants --bamFiles=$FILENAME --refFile=$REFERENCE --regions=$BED_FILE --output=${OUT}_indel.vcf --filterDuplicates=0 --nCPU=$DNA_PARALLEL_ALIGNMENT --genSNPs 0 --genIndels 1 --logFileName=$OUT.log
+python2.7 $PLATYPUS_BINARY callVariants --bamFiles=$FILENAME --refFile=$REFERENCE --regions=$BED_FILE --output=${OUT}_indel.vcf --filterDuplicates=0 --nCPU=$DNA_PARALLEL_ALIGNMENT --genSNPs 0 --genIndels 1 --logFileName=$OUT.log
 
 bgzip -c ${OUT}_indel.vcf > ${OUT}_indel.vcf.gz
 

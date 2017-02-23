@@ -92,14 +92,14 @@ def region_filter(vcf, bed):
             line = line.rstrip('\n')
             line = re.split(r'\t+', line.rstrip('\t'))
             if line[0].startswith("##"):
-                print "\t".join(line)
+                print('\t'.join(line))
             elif line[0] == '#CHROM':
-                print '\t'.join(line)
+                print('\t'.join(line))
     for variant in variants:
         for key, value in regions.items():
             if variant[0] == key and int(variant[1]) in value :
                 counter += 1
-                print '\t'.join(variant)
+                print('\t'.join(variant))
 
 def VCF_Info_filter(vcf, info_field, threshold):
     with open(vcf, "r") as inVCF:
@@ -112,9 +112,9 @@ def VCF_Info_filter(vcf, info_field, threshold):
             SB = 0
             t_1 = 1 - float(threshold)
             if line[0].startswith("##"):
-                print "\t".join(line)
+                print('\t'.join(line))
             elif line[0] == '#CHROM':
-                print '\t'.join(line)
+                print('\t'.join(line))
             elif re.search(r'^(\d+|X|Y)|^chr(\d+|X|Y)', line[0]):
                 flag = 0
                 for k,x in enumerate(line[7].split(';')):
@@ -150,7 +150,7 @@ def VCF_Info_filter(vcf, info_field, threshold):
                                 flag = 1
                                 break
                 if flag == 1 :
-                    print '\t'.join(line)
+                    print('\t'.join(line))
             else:
                 continue
 

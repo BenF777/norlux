@@ -1,6 +1,6 @@
 library(cn.mops)
 
-BAMFiles <- list.files(pattern="_aligned.bam$")
+BAMFiles <- list.files(pattern=".dupsMarked.bam$")
 
 segments_chr7 = read.delim("/home/benflies/github/norlux/scripts/bed/NPHD_chr7.bed",header=FALSE)
 
@@ -30,7 +30,7 @@ jpeg('cnv_chr7_5.jpg')
 segplot(res_chr7,sampleIdx=5)
 dev.off()
 
-jpeg('cnv_chr7_6jpg')
+jpeg('cnv_chr7_6.jpg')
 segplot(res_chr7,sampleIdx=6)
 dev.off()
 
@@ -102,34 +102,34 @@ bam_counts_whole = getSegmentReadCountsFromBAM(BAMFiles, GR=gr_whole, mode="pair
 
 res_whole = exomecn.mops(bam_counts_whole, parallel=4, priorImpact=10)
 
-jpeg('cnv_egfr_1.jpg')
-segplot(res,sampleIdx=1)
+jpeg('cnv_1.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=1)
 dev.off()
 
-jpeg('cnv_egfr_2.jpg')
-segplot(res,sampleIdx=2)
+jpeg('cnv_2.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=2)
 dev.off()
 
-jpeg('cnv_egfr_3.jpg')
-segplot(res,sampleIdx=3)
+jpeg('cnv_3.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=3)
 dev.off()
 
-jpeg('cnv_egfr_4.jpg')
-segplot(res,sampleIdx=4)
+jpeg('cnv_4.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=4)
 dev.off()
 
-jpeg('cnv_egfr_5.jpg')
-segplot(res,sampleIdx=5)
+jpeg('cnv_5.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=5)
 dev.off()
 
-jpeg('cnv_egfr_6.jpg')
-segplot(res,sampleIdx=6)
+jpeg('cnv_6.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=6)
 dev.off()
 
-jpeg('cnv_egfr_7.jpg')
-segplot(res,sampleIdx=7)
+jpeg('cnv_7.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=7)
 dev.off()
 
-jpeg('cnv_egfr_8.jpg')
-segplot(res,sampleIdx=8)
+jpeg('cnv_8.jpg',width=1600,height=1000,quality=100)
+segplot(res_whole,sampleIdx=8)
 dev.off()
