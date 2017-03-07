@@ -36,7 +36,7 @@ echo
 mkdir -p $LOCAL_NGS_PATH/$RUN_ID
 
 #COPY to local workstation
-time cp -rf $SERVER_NGS_PATH/$RUN_NAME $LOCAL_NGS_PATH
+#time cp -rf $SERVER_NGS_PATH/$RUN_NAME $LOCAL_NGS_PATH
 
 #Create output directories in the local run copy
 mkdir -p $FASTQ_DEMUX
@@ -46,8 +46,8 @@ mkdir -p $BAM_PATH
 
 #Generate FASTQ files
 echo "Convert Bcl To Fastq"
-bash $SCRIPT_PATH/bcl/convertBclToFastq.sh $RUN_PATH
-wait
+#bash $SCRIPT_PATH/bcl/convertBclToFastq.sh $RUN_PATH
+#wait
 
 mv $FASTQ_PATH/* $FASTQ_DEMUX/
 

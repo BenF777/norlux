@@ -29,7 +29,7 @@ normalizedReadCounts <- CombinedNormalizedCounts(sampleReadCounts, referenceRead
 samplesNormalizedReadCounts = normalizedReadCounts["samples"][[1]]
 referenceNormalizedReadCounts = normalizedReadCounts["reference"][[1]]
 
-replicates <- 1000000
+replicates <- 50000
 bootList <- BootList(geneNames, samplesNormalizedReadCounts, referenceNormalizedReadCounts, replicates = replicates)
 
 backgroundNoise <- Background(geneNames, samplesNormalizedReadCounts, referenceNormalizedReadCounts, bootList, replicates = replicates, significanceLevel= 0.0000001, robust = TRUE)
