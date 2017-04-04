@@ -12,7 +12,7 @@ Tools used:
 - Alignment: BWA mem
 - Variant Calling: Samtools (SNVs) & Platypus (Indels)
 - Variant Filtering: VariantAnnotation
-- Variant Annotation: Annotator
+- Variant Annotation: Annovar
 
 Variant Filtering Settings:
 - Minimum Coverage: 40x
