@@ -52,32 +52,42 @@ echo "Convert Bcl To Fastq"
 mv $FASTQ_PATH/* $FASTQ_DEMUX/
 
 #Trim low-quality bases from FASTQ reads
+#Cut 2 bases from the ends of each read -> is necessary due to A-tailing in the Lib Prep workflow.
+
 echo "TRIMMER"
 find $FASTQ_DEMUX -name "*R1*.fastq.gz" | grep -v I1 | grep -v Undetermined | grep -v trimmed | sort | parallel -P$DNA_PARALLEL_ALIGNMENT -n1 bash $SCRIPT_PATH/qc/fastxTrimmer_bothSites.sh $CONFIG_FILE $TRIMMER_LEFT $TRIMMER_RIGHT $FASTQ_DEMUX
 find $FASTQ_DEMUX -name "*R2*.fastq.gz" | grep -v I1 | grep -v Undetermined | grep -v trimmed | sort | parallel -P$DNA_PARALLEL_ALIGNMENT -n1 bash $SCRIPT_PATH/qc/fastxTrimmer_bothSites.sh $CONFIG_FILE $TRIMMER_LEFT $TRIMMER_RIGHT $FASTQ_DEMUX
 wait
 
 #Perform a Quality Control on FASTQ files
+#Do this for both trimmed and untrimmed FASTQ files -> see how trimming affects data
+
 echo "FASTQC"
 time bash $SCRIPT_PATH/qc/generateFastqc.sh $CONFIG_FILE $RUN_PATH &
 wait
 
-#Align reads to reference genome (hg19)
+#Align reads to reference genome (hg19) with BWA MEM
 echo "ALIGNMENT"
 SCRIPT="bash $SCRIPT_PATH/dna/bwaAllignmentPairedRead.sh $CONFIG_FILE $BAM_PATH $LOG_PATH $RUN_ID"
 find $FASTQ_DEMUX -name "*trimmed.fastq.gz" | grep -v I1 | grep -v Undetermined | sort | parallel -P $DNA_PARALLEL_ALIGNMENT -n2 $SCRIPT
 wait
 
-echo "CNV"
-mkdir -p $CNV_PATH
-ACT_BED_FILE=$SCRIPT_PATH/bed/3037891_Covered.bed
+#Copy Number Variant Analysis
+#Still testing, still did not find a satisfying tool.
+#Optimally we want something like the CNV tool for the Hereditary Cancer Solution in SophiaDDM.
 
+#echo "CNV"
+#mkdir -p $CNV_PATH
+#ACT_BED_FILE=$SCRIPT_PATH/bed/3037891_Covered.bed
 #find $BAM_PATH -name "*.dupsMarked.bam" | while read fname; do
 #      file_name=$(basename "$fname")
 #      Rscript $SCRIPT_PATH/cnv/cnv_analysis_seqCNA_seqRun.R $SERVER_RESULT_PATH $CNV_PATH $ACT_BED_FILE $file_name $fname $RUN_ID
 #done
 
 echo "Variant Calling using Samtools for SNVs and Platypus for Indels"
+#This is how they do it in the paper.
+#TODO: implement other variant calling algorithms (samtools apparently isn't the best one)
+#TODO: compare the results of these algorithms
 
 mkdir -p $VAR_PATH_SAMTOOLS
 mkdir -p $VAR_PATH_PLATYPUS
@@ -94,6 +104,7 @@ find $BAM_PATH -name "*dupsMarked.bam" | while read fname; do
       bash $SCRIPT_PATH/dna/runPlatypus_INDEL.sh $CONFIG_FILE $VAR_PATH_PLATYPUS $ACT_BED_FILE $fname
 done
 
+#Perform a coverage analysis for QC
 echo "COVERAGE"
 
 COVERAGE_PATH=$FILE_PATH/coverage
