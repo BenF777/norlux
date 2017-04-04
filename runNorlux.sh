@@ -84,7 +84,7 @@ wait
 #      Rscript $SCRIPT_PATH/cnv/cnv_analysis_seqCNA_seqRun.R $SERVER_RESULT_PATH $CNV_PATH $ACT_BED_FILE $file_name $fname $RUN_ID
 #done
 
-echo "Variant Calling using Samtools for SNVs and Platypus for Indels"
+echo "VARIANT CALLING"
 #This is how they do it in the paper.
 #TODO: implement other variant calling algorithms (samtools apparently isn't the best one)
 #TODO: compare the results of these algorithms
